@@ -4,6 +4,8 @@
 
 [[筆記]使用 Angular 在 Capacitor app 提供推播通知功能(@capacitor/push-notifications 套件 + Firebase)-Android 版](https://perfect-submarine-445.notion.site/Angular-Capacitor-app-capacitor-push-notifications-Firebase-Android-e10d47191105460abf3fd8fb07066fce)
 
+PS：iOS 版本待補
+
 ## 安裝
 
 以下將會引導你如何安裝此專案到你的電腦上。
