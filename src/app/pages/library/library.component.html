@@ -1,0 +1,14 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>圖書館</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <ion-grid>
+    <ion-row>
+      <ion-col class="ion-text-center">圖書館內容</ion-col>
+      id {{ id }}<br />
+      <ion-button (click)="fcmService.resetBadgeCount()">重設通知的 Badge 數量</ion-button>
+    </ion-row>
+  </ion-grid>
+</ion-content>

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "673066912710",
+    "project_id": "my-capacitor-project-demo",
+    "storage_bucket": "my-capacitor-project-demo.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:673066912710:android:ca902ce9e094ed2aa8c0c7",
+        "android_client_info": {
+          "package_name": "com.CapacitorPushNotifications.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAAkQRxqg2Wls0jRCLOqMbCrP4N104p8Iw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

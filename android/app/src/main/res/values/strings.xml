@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">CapacitorPushNotifications-demo</string>
+    <string name="title_activity_main">CapacitorPushNotifications-demo</string>
+    <string name="package_name">com.CapacitorPushNotifications.app</string>
+    <string name="custom_url_scheme">com.CapacitorPushNotifications.app</string>
+</resources>
