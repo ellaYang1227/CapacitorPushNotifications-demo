@@ -3,8 +3,6 @@ import { Capacitor } from '@capacitor/core';
 import { ActionPerformed, PushNotifications, PushNotificationSchema, Token } from '@capacitor/push-notifications';
 import { Router } from '@angular/router';
 
-export const FCM_TOKEN = 'push_notification_token';
-
 @Injectable({
   providedIn: 'root'
 })
@@ -33,13 +31,11 @@ export class FcmService {
 
       // 如果權限狀態為 prompt 表示用戶尚未作出選擇 則請求權限
       if (receive === 'prompt') {
-        console.log('permStatus.receive：prompt / 請求接收推播通知的權限');
         permStatus = await PushNotifications.requestPermissions();
       }
 
       // 如果最終權限為被 granted 表示被用戶授予 反之則為未授予權限拋出錯誤
       if (receive !== 'granted') {
-        console.log('permStatus.receive：granted / 用戶拒絕權限');
         throw new Error('用戶拒絕權限!');
       }
 
