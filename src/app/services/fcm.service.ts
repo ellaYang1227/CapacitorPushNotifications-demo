@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, NgZone } from '@angular/core';
 import { Capacitor } from '@capacitor/core';
 import { ActionPerformed, PushNotifications, PushNotificationSchema, Token } from '@capacitor/push-notifications';
 import { Router } from '@angular/router';
@@ -9,18 +9,19 @@ import { Router } from '@angular/router';
 export class FcmService {
 
   constructor(
-    private router: Router
+    private router: Router,
+    private ngZone: NgZone
   ) { }
 
   // 初始化推送
-  initPush() {
+  initPush(): void {
     if (Capacitor.getPlatform() !== 'web') {
       this.registerNotifications();
     }
   }
 
   // 註冊通知
-  private async registerNotifications() {
+  private async registerNotifications(): Promise<void> {
     try {
       // 新增事件監聽器，處理推送通知事件
       await this.addListeners();
@@ -47,52 +48,61 @@ export class FcmService {
   }
 
   // 取得已送達通知
-  async getDeliveredNotifications() {
+  async getDeliveredNotifications(): Promise<void> {
     const notificationList = await PushNotifications.getDeliveredNotifications();
     console.log('取得已送達通知', notificationList);
   }
 
   // 新增事件監聽器
-  addListeners() {
+  async addListeners(): Promise<void> {
     // 當推播通知註冊順利完成時呼叫。提供推播通知令牌
-    PushNotifications.addListener(
+    await PushNotifications.addListener(
       'registration',
-      async (token: Token) => {
+      (token: Token) => {
         console.log('登記 My token: ', JSON.stringify(token));
       }
     );
 
     // 當推播通知註冊完成但出現問題時呼叫。提供註冊問題的錯誤
-    PushNotifications.addListener('registrationError', (error: any) => {
+    await PushNotifications.addListener('registrationError', (error: any) => {
       console.error('註冊完成 Error: ' + JSON.stringify(error));
     });
 
     // 當設備收到推播通知時呼叫
-    PushNotifications.addListener(
+    await PushNotifications.addListener(
       'pushNotificationReceived',
-      async (notification: PushNotificationSchema) => {
+      (notification: PushNotificationSchema) => {
         // notification 接收到的推送通知的詳細信息，例如標題、內容和自訂數據
         console.log('收到推播通知: ' + JSON.stringify(notification));
         const { data } = notification;
-        if (data?.redirect) this.router.navigateByUrl(data.redirect)
+        this.handleData(data);
       }
     );
 
     // 對推播通知進行操作時呼叫
-    PushNotifications.addListener(
+    await PushNotifications.addListener(
       'pushNotificationActionPerformed',
-      async (notification: ActionPerformed) => {
+      (notification: ActionPerformed) => {
         // notification 用戶操作相關的推送通知的詳細信息
         const { data } = notification.notification;
         console.log('對推播通知進行操作: ' + JSON.stringify(notification.notification));
         console.log('推播數據: ', JSON.stringify(data));
-        if (data?.redirect) this.router.navigateByUrl(data.redirect)
+        this.handleData(data);
       }
     );
   }
 
+  /**
+   * 處理推播數據
+   * @param data 推播資料
+   */
+  handleData(data: any): void {
+    // 使用 ngZone 解決跳轉後 API 取回後無法顯示問題
+    if (data?.route) { this.ngZone.run(() => this.router.navigateByUrl(data.route)) }
+  }
+
   // 重置 Badge 計數
-  resetBadgeCount() {
-    PushNotifications.removeAllDeliveredNotifications();
+  async resetBadgeCount(): Promise<void> {
+    await PushNotifications.removeAllDeliveredNotifications();
   }
 }
